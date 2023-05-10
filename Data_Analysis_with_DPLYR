@@ -1,0 +1,24 @@
+library(ggplot2)
+library(dplyr)
+msleep
+names(msleep)
+msleep%>%
+  select(c(1,6,7,10,11))%>%
+  filter(sleep_total<5)%>%
+  mutate(avg=mean(sleep_total,na.rm=T))
+msleep%>%
+  mutate(sleep_over_avg = sleep_total-mean(sleep_total))%>%
+  select(name,sleep_total,sleep_over_avg)
+  arrange(desc(sleep_over_avg))
+msleep
+msleep%>%
+  rowwise()%>%
+  mutate(avg_test=mean(c(sleep_total,sleep_rem,na.rm=T)))%>%
+  select(sleep_total,sleep_rem,avg_test)
+hist(msleep$brainwt)
+msleep%>%
+  mutate(brain_wt_under_1=ifelse(brainwt<.05,"yeeha","NA"))
+library(stringr)
+msleep%>%
+  mutate_all(~str_replace_all(.,"//n",""))
+  mutate_all(str_trim)
